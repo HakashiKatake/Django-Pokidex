@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar {
+            text-align: center;
+        }
+        .navbar select, .navbar input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .pokemon-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .pokemon-item {
+            text-align: center;
+            width: 120px;
+        }
+        .pokemon-item img {
+            width: 100px;
+            height: 100px;
+        }
+        .pokemon-item h3 {
+            margin-top: 10px;
+        }
+        .random-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Pokédex</h1>
+        <div class="navbar">
+            <form method="get" action="/">
+                <select name="region" onchange="this.form.submit()">
+                    {% for region in regions %}
+                        <option value="{{ region.id }}" {% if region.id|stringformat:'s' == request.GET.region %}selected{% endif %}>
+                            {{ region.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+
+            <!-- Search Form -->
+            <form method="get" action="/" style="display: inline-block;">
+                <input type="text" name="search" placeholder="Search Pokémon" value="{{ request.GET.search }}" style="width: 200px;">
+                <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <h2>Pokémon from Generation {{ request.GET.region }}</h2>
+
+        <!-- Random Pokémon Button -->
+        <button class="random-btn" onclick="location.href='/pokemon/{{ random_pokemon.name }}'">Random Pokémon</button>
+
+        <!-- Pokémon List -->
+        <div class="pokemon-list">
+            {% for pokemon in pokemons %}
+                <div class="pokemon-item">
+                    <a href="/pokemon/{{ pokemon.name }}">
+                        <img src="{{ pokemon.image_url }}" alt="{{ pokemon.name }}">
+                        <h3>{{ pokemon.name | title }}</h3>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>&copy; 2024 Pokédex | Powered by PokeAPI</p>
+    </div>
+</body>
+</html>

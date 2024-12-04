@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .pokemon-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .pagination {
+            margin: 20px 0;
+        }
+        .pagination a {
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            margin: 2px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pokémon List</h1>
+        <ul>
+            {% for pokemon in pokemon_list %}
+                <li class="pokemon-item">
+                    <a href="{% url 'pokemon_details' pokemon.name %}">{{ pokemon.name | title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="?page={{ page|add:-1 }}">Previous</a>
+            {% endif %}
+            {% if page < total_pages %}
+                <a href="?page={{ page|add:1 }}">Next</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

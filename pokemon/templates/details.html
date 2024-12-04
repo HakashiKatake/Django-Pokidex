@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ pokemon.name | title }} - Pokémon Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .header img {
+            width: 150px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #333;
+        }
+        .stats, .abilities, .types, .evolution, .moves {
+            margin: 20px 0;
+        }
+        h2 {
+            color: #444;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            padding: 5px;
+            margin: 2px 0;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .evolution img {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+        }
+        .back {
+            display: inline-block;
+            padding: 10px 15px;
+            color: #fff;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if pokemon %}
+            <div class="header">
+                <h1>{{ pokemon.name | title }}</h1>
+                <img src="{{ pokemon.image }}" alt="{{ pokemon.name }}">
+            </div>
+            <div class="stats">
+                <h2>Stats</h2>
+                <ul>
+                    {% for stat, value in pokemon.stats.items %}
+                        <li><strong>{{ stat | title }}:</strong> {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="types">
+                <h2>Types</h2>
+                <ul>
+                    {% for t in pokemon.types %}
+                        <li>{{ t | title }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="abilities">
+                <h2>Abilities</h2>
+                <ul>
+                    {% for ability in pokemon.abilities %}
+                        <li>{{ ability | title }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="evolution">
+                <h2>Evolution Chain</h2>
+                {% if pokemon.evolution %}
+                    <div style="display: flex; flex-wrap: wrap;">
+                        {% for evo in pokemon.evolution %}
+                            <div style="text-align: center; margin: 10px;">
+                                <img src="{{ evo.image }}" alt="{{ evo.name }}">
+                                <p>{{ evo.name | title }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No evolution data available.</p>
+                {% endif %}
+            </div>
+            <div class="moves">
+                <h2>Moves</h2>
+                <ul>
+                    {% for move in pokemon.moves %}
+                        <li>{{ move | title }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <p>{{ error }}</p>
+        {% endif %}
+        <a href="/" class="back">Back to Search</a>
+    </div>
+</body>
+</html>
